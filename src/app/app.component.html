@@ -1,6 +1,33 @@
-<h1 style="text-align: center;">Nouveau membre</h1>
+<h1 style="text-align: center">Nouveau membre</h1>
 
 <div class="snapshot">
-  <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [videoOptions]="videoOptions" [imageQuality]="1" (initError)="handleInitError($event)"></webcam><br>
-  <button (click)="triggerSnapshot()">Prendre une photo</button>
+  <div *ngIf="isPreviewVisible">
+    <webcam
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      [videoOptions]="videoOptions"
+      [imageQuality]="1"
+      (initError)="handleInitError($event)"
+    ></webcam
+    ><br />
+    <button (click)="triggerSnapshot()">Prendre une photo</button>
+  </div>
+  <label for="visibilityCheck">{{ togglePreviewMessage }}</label>
+  <input
+    type="checkbox"
+    name="visibilityCheck"
+    id="visibilityCheck"
+    (click)="togglePreviewVisibility()"
+  />
 </div>
+<div *ngIf=!pictureUploaded>
+<div *ngIf="webcamImage" class="snapshot">
+  <h2>C'est dans la boite</h2>
+  <img [src]="webcamImage.imageAsDataUrl" alt="photo" /><br />
+  <button class="actionBtn" (click)="upload()">Sauvegarder la photo</button>
+  <span *ngIf="pleaseWait"
+    ><img src="assets/spinnerLoad.gif" alt="spinner" class="spinner" />
+  </span>
+</div>
+</div>
+<div class="message"><h2>{{this.message}}</h2></div>
